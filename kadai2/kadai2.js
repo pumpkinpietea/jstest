@@ -4,22 +4,16 @@ const countWords = inputText => {
   // 区切り文字を指定する カンマ(,) ピリオド(.) スペース( )
   const splitString = /[,.\s]/
   const inputArray = inputText.split(splitString)
-  inputArray.sort()
-  const outputObject = new Map()
-  let counter = 1
-  let previousWord = ''
-  for (const currentWord of inputArray) {
-    if (previousWord === currentWord) {
-      counter += 1 // １つ前の単語と一致したら、カウントアップ
-    } else if (previousWord !== currentWord) {
-      outputObject.set(previousWord, counter) // 1つ前の単語と一致しなかったら、1つ前の単語とカウンターを書き出し
-      counter = 1 // counter reset
+  const words = new Map()
+  for (const i of inputArray) {
+    if (words.has(i)) {
+      words.set(i, words.get(i) + 1) // 単語があればカウントアップ
+    } else {
+      words.set(i, 1) // 単語がなければ追加
     }
-    previousWord = currentWord // 1つ前の単語を置き換える
   }
-  outputObject.set(previousWord, counter) // 最後の単語を書き出し
-  outputObject.delete('') // 空文字を削除
-  return outputObject
+  words.delete('') // 空文字を削除
+  return words
 }
 
 const mapToObj = inputMap => {
